@@ -22,6 +22,7 @@ export default class Service {
     const isEmptyWhere = Object.keys(where).length === 0;
     if (isEmptyWhere) throw new Error('Need a query');
     const result = await this.repository.findOne(where);
+    if (!result) throw new Error('Nothing Found');
     return result;
   }
 

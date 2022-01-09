@@ -5,4 +5,11 @@ export default new class ClientsService extends Service {
   constructor() {
     super(ClientsRepository);
   }
+
+  async findOne({id, name}) {
+    const where = {id, name};
+    if (!where.id) delete where.id;
+    if (!where.name) delete where.name;
+    return await super.findOne(where);
+  }
 };
