@@ -1,5 +1,7 @@
+import Repository from '../Repository/Repository';
+
 export default class Service {
-  constructor(private repository) {
+  constructor(private repository: Repository) {
   }
   async getAll(where) {
     const result = await this.repository.findAll(where);
@@ -23,9 +25,24 @@ export default class Service {
     return result;
   }
 
+  async updateOne(id, data) {
+    await this.findOne(id);
+    const columnsFiltered = this.filterColumns(data);
+    const result = await this.repository.update(id, data, columnsFiltered);
+    return result;
+  }
+
   async delete(id) {
     const idNotFound = !(await this.findOne({id: id}));
     if (idNotFound) throw new Error('Id not found');
     await this.repository.delete(id);
+  }
+
+  filterColumns(data) {
+    const columns = Object.keys(data);
+    return columns.filter((column) => {
+      if (column == 'id' || column == 'createdAt') {};
+      return column;
+    });
   }
 };

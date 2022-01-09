@@ -22,6 +22,15 @@ export default class Repository {
     return result;
   }
 
+  async update(id, data, columns: string[]) {
+    const repo = getRepository(this.schema);
+    const update = await repo.findOne(id);
+    columns.forEach((column) => {
+      update[column] = data[column] ? data[column] : update[column];
+    });
+    return await repo.save(update);
+  }
+
   async delete(id: string) {
     const repo = getRepository(this.schema);
     await repo.delete(id);
