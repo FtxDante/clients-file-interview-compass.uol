@@ -32,6 +32,17 @@ export default class CitiesController {
     }
   }
 
+  static async updateACity(req: Request, res: Response) {
+    try {
+      const {id} = req.params;
+      const {body} = req;
+      const result = await CitiesService.updateOne(id, body);
+      res.status(200).send(result);
+    } catch (err) {
+      res.status(400).json({message: err.message});
+    }
+  }
+
   static async deleteCity(req: Request, res: Response) {
     try {
       const {id} = req.params;
