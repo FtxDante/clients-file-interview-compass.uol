@@ -3,12 +3,6 @@ import Repository from '../Repository/Repository';
 export default class Service {
   constructor(private repository: Repository) {
   }
-  async getAll(where) {
-    const result = await this.repository.findAll(where);
-    if (!result.length) throw new Error('Nothing to see here');
-    return result;
-  }
-
   async create(data) {
     const itemAlreadyExists = await this.findOne(data);
     if (itemAlreadyExists) {
@@ -16,6 +10,12 @@ export default class Service {
     }
     const create = await this.repository.create(data);
     return create;
+  }
+
+  async getAll(where) {
+    const result = await this.repository.findAll(where);
+    if (!result.length) throw new Error('Nothing to see here');
+    return this.paginate(where, result);
   }
 
   async findOne(where) {
@@ -37,6 +37,20 @@ export default class Service {
     const idNotFound = !(await this.findOne({id: id}));
     if (idNotFound) throw new Error('Id not found');
     await this.repository.delete(id);
+  }
+
+  paginate({limit, page}, result) {
+    const [items, total] = result;
+    const offsets = Math.ceil(total/limit);
+    const offset = parseInt(page);
+    limit = parseInt(limit);
+    return {
+      items,
+      total,
+      limit,
+      offset,
+      offsets,
+    };
   }
 
   filterColumns(data) {

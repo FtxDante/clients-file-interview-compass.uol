@@ -4,8 +4,8 @@ import CitiesService from '../services/CitiesService';
 export default class CitiesController {
   static async getAllCities(req: Request, res: Response) {
     try {
-      const {query} = req;
-      const result = await CitiesService.getAll(query);
+      const {limit = 10, page = 1, ...queries} = req.query;
+      const result = await CitiesService.getAll({limit, page, ...queries});
       res.status(200).json(result);
     } catch (err) {
       res.status(400).json({message: err.message});

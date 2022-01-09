@@ -15,8 +15,8 @@ export default class ClientsController {
 
   static async getAllClients(req: Request, res: Response) {
     try {
-      const {query} = req;
-      const result = await ClientsService.getAll(query);
+      const {limit = 10, page = 1, ...queries} = req.query;
+      const result = await ClientsService.getAll({limit, page, ...queries});
       res.status(200).json(result);
     } catch (err) {
       res.status(400).json({message: err.message});
