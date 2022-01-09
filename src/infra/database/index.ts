@@ -1,3 +1,13 @@
 import {createConnection} from 'typeorm';
-console.log('Entrei na conexão');
-createConnection();
+class Connection {
+  constructor() {
+    this.connect();
+  }
+  async connect() {
+    console.log('Connectando');
+    await createConnection();
+    console.log('Conectado');
+  }
+}
+
+export default new Connection();

@@ -1,19 +1,29 @@
-/* eslint-disable require-jsdoc */
-import {CityRequest} from '../types/CityRequest';
+import {getRepository} from 'typeorm';
 
-export class Repository {
-  constructor(private repository: any) {
-    this.repository = repository;
+export default class Repository {
+  constructor(private schema) {
+  }
+  async create(data) {
+    const repo = getRepository(this.schema);
+    const result = repo.create(data);
+    await repo.save(result);
+    return result;
   }
 
-  async create(data: CityRequest) {
-    const created = this.repository.create(data);
-    await this.repository.save(created);
-    return created;
+  async findAll(where) {
+    const repo = getRepository(this.schema);
+    const result = await repo.find({where});
+    return result;
   }
 
-  async findAll(where: CityRequest | any = {}) {
-    const found = await this.repository.find(where);
-    return found;
+  async findOne(where) {
+    const repo = getRepository(this.schema);
+    const result = await repo.findOne(where);
+    return result;
   }
-}
+
+  async delete(id: string) {
+    const repo = getRepository(this.schema);
+    await repo.delete(id);
+  }
+};

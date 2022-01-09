@@ -1,4 +1,3 @@
-/* eslint-disable require-jsdoc */
 /* eslint-disable new-cap */
 import {Column,
   Entity,
@@ -8,7 +7,7 @@ import {Column,
 import {CitiesSchema} from './CitiesSchema';
 import {v4 as uuid} from 'uuid';
 
-@Entity('people')
+@Entity('clients')
 export class PeopleSchema {
   @PrimaryGeneratedColumn('uuid')
     id!: string;
@@ -25,11 +24,14 @@ export class PeopleSchema {
   @Column()
     age!: number;
 
+  @Column()
+    current_city_id!: string;
+
   @ManyToOne(() => CitiesSchema)
   @JoinColumn({name: 'current_city_id'})
-    currentCityId!: string;
+    currentCityId!: CitiesSchema;
 
-  @Column()
+  @Column('timestamp')
     createdAt!: Date;
 
   constructor() {

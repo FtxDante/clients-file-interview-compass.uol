@@ -1,5 +1,4 @@
 /* eslint-disable new-cap */
-/* eslint-disable require-jsdoc */
 import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
 import {v4 as uuid} from 'uuid';
 @Entity('cities')

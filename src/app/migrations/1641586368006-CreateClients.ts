@@ -1,11 +1,11 @@
 /* eslint-disable require-jsdoc */
 import {MigrationInterface, QueryRunner, Table} from 'typeorm';
 
-export class CreatePeople1641586368006 implements MigrationInterface {
+export class CreateClients1641586368006 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
         new Table({
-          name: 'people',
+          name: 'clients',
           columns: [
             {
               name: 'id',
@@ -36,11 +36,12 @@ export class CreatePeople1641586368006 implements MigrationInterface {
             {
               name: 'createdAt',
               type: 'timestamp',
+              default: 'now()',
             },
           ],
           foreignKeys: [
             {
-              name: 'fk_people_cities',
+              name: 'fk_clients_cities',
               columnNames: ['current_city_id'],
               referencedTableName: 'cities',
               referencedColumnNames: ['id'],
@@ -51,6 +52,6 @@ export class CreatePeople1641586368006 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('people');
+    await queryRunner.dropTable('clients');
   }
 }
