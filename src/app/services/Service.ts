@@ -22,12 +22,12 @@ export default class Service {
     const isEmptyWhere = Object.keys(where).length === 0;
     if (isEmptyWhere) throw new Error('Need a query');
     const result = await this.repository.findOne(where);
-    if (!result) throw new Error('Nothing Found');
     return result;
   }
 
   async updateOne(id, data) {
-    await this.findOne(id);
+    await this.findOne({id: id});
+    if (data.id) delete data.id;
     const columnsFiltered = this.filterColumns(data);
     const result = await this.repository.update(id, data, columnsFiltered);
     return result;
