@@ -12,4 +12,8 @@ export default new class ClientsService extends Service {
     if (!where.name) delete where.name;
     return await super.findOne(where);
   }
+
+  async updateOne(id: any, {name}): Promise<unknown> {
+    return await super.updateOne(id, {name});
+  }
 };

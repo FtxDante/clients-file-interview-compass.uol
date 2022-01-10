@@ -6,6 +6,5 @@ export default (server: Application, router: Router) => {
   router.get('/city/all?', CitiesController.getAllCities);
   router.get('/city/?', CitiesController.findCity);
   router.delete('/city/:id', CitiesController.deleteCity);
-  router.put('/city/:id', CitiesController.updateACity);
   server.use('/REST', router);
 };

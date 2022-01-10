@@ -15,8 +15,8 @@ export default class ClientsController {
 
   static async getAllClients(req: Request, res: Response) {
     try {
-      const {query} = req;
-      const result = await ClientsService.getAll(query);
+      const {limit = 10, page = 1, ...queries} = req.query;
+      const result = await ClientsService.getAll({limit, page, ...queries});
       res.status(200).json(result);
     } catch (err) {
       res.status(400).json({message: err.message});
@@ -25,13 +25,25 @@ export default class ClientsController {
 
   static async findOneClient(req: Request, res: Response) {
     try {
-      const {query} = req;
-      const result = await ClientsService.findOne(query);
+      const {id, name} = req.query;
+      const result = await ClientsService.findOne({id, name});
       res.status(200).json(result);
     } catch (err) {
       res.status(400).json({message: err.message});
     }
   }
+
+  static async updateAClient(req: Request, res: Response) {
+    try {
+      const {id} = req.params;
+      const {body} = req;
+      const result = await ClientsService.updateOne(id, body);
+      res.status(200).send(result);
+    } catch (err) {
+      res.status(400).json({message: err.message});
+    }
+  }
+
 
   static async deleteClient(req: Request, res: Response) {
     try {
