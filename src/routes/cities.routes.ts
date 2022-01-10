@@ -1,10 +1,12 @@
 import {Application, Router} from 'express';
 import CitiesController from '../app/controllers/CitiesController';
+import {allRequiredValidation,
+  queriesRequiredValidation} from '../app/middlewares/validations/city';
 
 export default (server: Application, router: Router) => {
-  router.post('/city', CitiesController.postACity);
+  router.post('/city', allRequiredValidation, CitiesController.postACity);
   router.get('/city/all?', CitiesController.getAllCities);
-  router.get('/city/?', CitiesController.findCity);
+  router.get('/city/?', queriesRequiredValidation, CitiesController.findCity);
   router.delete('/city/:id', CitiesController.deleteCity);
-  server.use('/REST', router);
+  server.use('/api/v1', router);
 };

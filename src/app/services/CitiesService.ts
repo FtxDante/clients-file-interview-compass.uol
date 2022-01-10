@@ -1,3 +1,4 @@
+import {City} from '../interfaces/City';
 import CitiesRepository from '../Repository/CitiesRepository';
 import Service from './Service';
 export default new class CitiesService extends Service {
@@ -5,8 +6,7 @@ export default new class CitiesService extends Service {
     super(CitiesRepository);
   }
 
-  async findOne({city, state}) {
-    const where = {city, state};
+  async findOne(where: City) {
     if (!where.city) delete where.city;
     if (!where.state) delete where.state;
     return await super.findOne(where);

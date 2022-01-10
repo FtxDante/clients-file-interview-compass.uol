@@ -1,11 +1,14 @@
 import {Application, Router} from 'express';
 import ClientsController from '../app/controllers/ClientsController';
+import {allRequiredValidation,
+  queriesRequiredValidation} from '../app/middlewares/validations/client';
 
 export default (server: Application, router: Router) => {
-  router.post('/client', ClientsController.postAClient);
+  router.post('/client', allRequiredValidation, ClientsController.postAClient);
   router.get('/client/all?', ClientsController.getAllClients);
-  router.get('/client', ClientsController.findOneClient);
+  router.get('/client?',
+      queriesRequiredValidation, ClientsController.findOneClient);
   router.delete('/client/:id', ClientsController.deleteClient);
   router.put('/client/:id', ClientsController.updateAClient);
-  server.use('/REST', router);
+  server.use('/api/v1', router);
 };

@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+import {City} from '../interfaces/City';
 import CitiesService from '../services/CitiesService';
 
 export default class CitiesController {
@@ -7,7 +8,7 @@ export default class CitiesController {
       const {limit = 10, page = 1, ...queries} = req.query;
       const result = await CitiesService.getAll({limit, page, ...queries});
       res.status(200).json(result);
-    } catch (err) {
+    } catch (err: any) {
       res.status(400).json({message: err.message});
     }
   }
@@ -17,17 +18,17 @@ export default class CitiesController {
       const {body} = req;
       const result = await CitiesService.create(body);
       res.status(201).json(result);
-    } catch (err) {
+    } catch (err: any) {
       res.status(400).json({message: err.message});
     }
   }
 
   static async findCity(req: Request, res: Response) {
     try {
-      const {city, state} = req.query;
+      const {city, state}: City = req.query;
       const result = await CitiesService.findOne({city, state});
       res.status(200).json(result);
-    } catch (err) {
+    } catch (err: any) {
       res.status(400).json({message: err.message});
     }
   }
@@ -37,7 +38,7 @@ export default class CitiesController {
       const {id} = req.params;
       await CitiesService.delete(id);
       res.status(200).end();
-    } catch (err) {
+    } catch (err: any) {
       res.status(400).json({message: err.message});
     }
   }
