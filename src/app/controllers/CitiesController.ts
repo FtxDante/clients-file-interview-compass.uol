@@ -24,8 +24,8 @@ export default class CitiesController {
 
   static async findCity(req: Request, res: Response) {
     try {
-      const {query} = req;
-      const result = await CitiesService.findOne(query);
+      const {city, state} = req.query;
+      const result = await CitiesService.findOne({city, state});
       res.status(200).json(result);
     } catch (err) {
       res.status(400).json({message: err.message});
