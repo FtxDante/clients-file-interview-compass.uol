@@ -7,5 +7,5 @@ export default (server: Application, router: Router) => {
   router.get('/client', ClientsController.findOneClient);
   router.delete('/client/:id', ClientsController.deleteClient);
   router.put('/client/:id', ClientsController.updateAClient);
-  server.use('/REST', router);
+  server.use('/api/v1', router);
 };

@@ -1,10 +1,13 @@
-import {getRepository} from 'typeorm';
+import {EntityTarget, getRepository} from 'typeorm';
+import {City} from '../interfaces/City';
+import {Client} from '../interfaces/Client';
+import {CitiesSchema, PeopleSchema} from '../schemas';
 
 export default class Repository {
-  constructor(private schema) {
+  constructor(private schema: EntityTarget<PeopleSchema | CitiesSchema>) {
   }
 
-  async create(data: object) {
+  async create(data: City | Client) {
     const schema = getRepository(this.schema);
     const result = schema.create(data);
     await schema.save(result);
@@ -12,7 +15,7 @@ export default class Repository {
     return result;
   }
 
-  async findAll({limit, page, ...where}) {
+  async findAll({limit, page, ...where}: any) {
     if (page >= 1) page--;
     const schema = getRepository(this.schema);
     const filter = {where, skip: page * limit, take: limit};
@@ -28,11 +31,11 @@ export default class Repository {
     return result;
   }
 
-  async update(id:string, data, columns: string[]) {
+  async update(id:string, data: any, columns: string[]) {
     const schema = getRepository(this.schema);
-    const result = await schema.findOne(id);
+    const result: any = await schema.findOne(id);
 
-    columns.forEach((column) => {
+    columns.forEach((column: string) => {
       result[column] = data[column] ? data[column] : result[column];
     });
 

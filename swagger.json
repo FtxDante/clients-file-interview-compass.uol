@@ -1,0 +1,79 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Clients File",
+    "description": "This API aims to save customer data, simply and directly.",
+    "contact": {
+      "name": "FtxDante",
+      "url": "https://github.com/FtxDante"
+    },
+    "license": "./LICENSE",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "localhost:3000/api/v1",
+      "description": "API - PRODUCTION"
+    },
+    {
+      "url":"localhost:3000/api/v1",
+      "description":"API - TESTS"
+    }
+  ],
+  "paths": {
+      "/city/all": {
+        "get": {
+          "summary": "Get all cities",
+          "description": "Allow search by city, state and id, by query params",
+          "tags": ["Cities"],
+          "parameters": [
+            {
+              "name": "city",
+              "in": "query",
+              "description": "Allow search by city"
+            },
+            {
+              "name": "state",
+              "in": "query",
+              "description": "Allow search by state"
+            },
+            {
+              "name": "id",
+              "in": "query",
+              "description": "Allow search by id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "object",
+                "items": {
+                  "$ref": "#/components/schemas/City"
+                }
+              }
+            }
+          }
+        }
+    }
+  },
+  "components": {
+    "schemas": {
+      "City": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "createdAt": "timestamp"
+        }
+      }
+    }
+  }
+}
