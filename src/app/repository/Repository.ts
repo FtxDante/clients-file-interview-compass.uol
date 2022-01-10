@@ -1,10 +1,9 @@
 import {EntityTarget, getRepository} from 'typeorm';
 import {City} from '../interfaces/City';
 import {Client} from '../interfaces/Client';
-import {CitiesSchema, PeopleSchema} from '../schemas';
 
 export default class Repository {
-  constructor(private schema: EntityTarget<PeopleSchema | CitiesSchema>) {
+  constructor(private schema: EntityTarget<City | Client>) {
   }
 
   async create(data: City | Client) {

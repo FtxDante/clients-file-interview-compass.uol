@@ -7,8 +7,7 @@ export default class ClientsController {
       const {body} = req;
       const result = await ClientsService.create(body);
       res.status(200).json(result);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
       res.status(400).json({message: err.message});
     }
   }
@@ -18,17 +17,17 @@ export default class ClientsController {
       const {limit = 10, page = 1, ...queries} = req.query;
       const result = await ClientsService.getAll({limit, page, ...queries});
       res.status(200).json(result);
-    } catch (err) {
+    } catch (err: any) {
       res.status(400).json({message: err.message});
     }
   }
 
   static async findOneClient(req: Request, res: Response) {
     try {
-      const {id, name} = req.query;
-      const result = await ClientsService.findOne({id, name});
+      const query = req.query;
+      const result = await ClientsService.findOne(query);
       res.status(200).json(result);
-    } catch (err) {
+    } catch (err: any) {
       res.status(400).json({message: err.message});
     }
   }
@@ -39,7 +38,7 @@ export default class ClientsController {
       const {body} = req;
       const result = await ClientsService.updateOne(id, body);
       res.status(200).send(result);
-    } catch (err) {
+    } catch (err: any) {
       res.status(400).json({message: err.message});
     }
   }
@@ -50,7 +49,7 @@ export default class ClientsController {
       const {id} = req.params;
       await ClientsService.delete(id);
       res.status(200).end();
-    } catch (err) {
+    } catch (err: any) {
       res.status(400).json({message: err.message});
     }
   }

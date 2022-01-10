@@ -1,8 +1,8 @@
 export interface City {
-  id: string,
-  city: string,
-  state: string,
-  createdAt: Date,
+  id?: string,
+  city?: string,
+  state?: string,
+  createdAt?: Date,
 };
 
 

@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+import {City} from '../interfaces/City';
 import CitiesService from '../services/CitiesService';
 
 export default class CitiesController {
@@ -24,7 +25,7 @@ export default class CitiesController {
 
   static async findCity(req: Request, res: Response) {
     try {
-      const {city, state} = req.query;
+      const {city, state}: City = req.query;
       const result = await CitiesService.findOne({city, state});
       res.status(200).json(result);
     } catch (err: any) {
