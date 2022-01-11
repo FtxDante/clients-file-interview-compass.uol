@@ -5,8 +5,8 @@ import {allRequiredValidation,
 
 export default (server: Application, router: Router) => {
   router.post('/client', allRequiredValidation, ClientsController.postAClient);
-  router.get('/client/all?', ClientsController.getAllClients);
-  router.get('/client?',
+  router.get('/client/all', ClientsController.getAllClients);
+  router.get('/client',
       queriesRequiredValidation, ClientsController.findOneClient);
   router.delete('/client/:id', ClientsController.deleteClient);
   router.put('/client/:id', ClientsController.updateAClient);
