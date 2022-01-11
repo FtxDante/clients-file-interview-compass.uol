@@ -101,7 +101,7 @@
         ],
         "responses": {
           "200": {
-            "description": "A city should be returned",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -121,11 +121,18 @@
             }
           },
           "400": {
-            "$ref":"#/components/responses/400",
-            "examples": {
-              "Need query params": {
-                "value": {
-                  "message": "\"value\" must contain at least one of [city, state]"
+            "description": "Not condition to search sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref":"#/components/responses/400"
+                },
+                "examples": {
+                  "Need query params": {
+                    "value": {
+                      "message": "\"value\" must contain at least one of [city, state]"
+                    }
+                  }
                 }
               }
             }
@@ -140,7 +147,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref":"#/components/responses/CityPost",
+                "$ref":"#/components/requestBodies/CityPost",
                 "required": ["city", "state"]
               },
               "examples": {
@@ -159,7 +166,20 @@
             "$ref":"#/components/responses/200"
           },
           "400": {
-            "$ref":"#/components/responses/alreadyRegistered"
+            "content": {
+             "application/json": {
+              "schema": {
+                "$ref":"#/components/responses/400"
+              },
+              "examples": {
+                "Id was found": {
+                  "value": {
+                    "message": "Already Registered"
+                  }
+                }
+              }
+             } 
+            }
           }
         }
       }
@@ -184,11 +204,71 @@
             "$ref":"#/components/responses/404"
           },
           "400": {
-            "$ref":"#/components/responses/400",
-            "examples": {
-              "Id bad format": {
-                "value": {
-                  "message":"\"id\" must be a valid GUID"
+            "description": "Invalid ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref":"#/components/responses/400"
+                },
+                "examples": {
+                  "Id bad format": {
+                    "value": {
+                      "message":"\"id\" must be a valid GUID"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients": {
+      "post": {
+        "description": "Allow create a client",
+        "summary": "Create a client",
+        "tags": ["Clients"],
+        "requestBody": {
+          "description":"Need send, name, gender, birthdate, age, current_city_id",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref":"#/components/requestBodies/ClientsPost"
+              },
+              "examples": {
+                "Request Body": {
+                  "value":{
+                    "name": "John Travolta",
+                    "gender": "male",
+                    "birthdate": "1980-12-21T03:00:00.000Z",
+                    "age": "70",
+                    "current_city_id": "543dc793-3db9-4406-bfb6-45a07b3ab5ba"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+
+            },
+            "content": {
+              "schema":{
+                "$ref": "#/components/responses/200"
+              },
+              "example": {
+                "Client created": {
+                  "value": {
+                    "id": "42377b1a-393b-482c-8b91-3275d35de0d9",
+                    "name": "John Travolta",
+                    "gender": "male",
+                    "birthdate": "1980-12-21T03:00:00.000Z",
+                    "age": "70",
+                    "current_city_id": "543dc793-3db9-4406-bfb6-45a07b3ab5ba",
+                    "createdAt": "2022-01-11T05:26:47.597Z"
+                  }
                 }
               }
             }
@@ -212,12 +292,43 @@
             "type": "string"
           },
           "createdAt": {
-            "type": "string"
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "Clients": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type":"string"
+          },
+          "name": {
+            "type":"string"
+          },
+          "gender": {
+            "type":"string",
+            "enum": ["male", "female"]
+          },
+          "birthdate":{
+            "type":"string",
+            "format":"date"
+          },
+          "age": {
+            "type": "number"
+          },
+          "current_city_id": {
+            "type":"string",
+            "format":"uuid"
+          },
+          "createdAt": {
+            "type":"string",
+            "format":"date"
           }
         }
       }
     },
-    "responses": {
+    "requestBodies": {
       "CityPost": {
         "type": "object",
         "properties": {
@@ -229,6 +340,30 @@
           }
         }
       },
+      "ClientsPost": {
+        "type":"object",
+        "properties": {
+          "name": {
+            "type":"string"
+          },
+          "gender": {
+            "type":"string"
+          },
+          "birthdate":{
+            "type":"string",
+            "format":"date"
+          },
+          "age": {
+            "type": "number"
+          },
+          "current_city_id": {
+            "type":"string",
+            "format":"uuid"
+          }
+        }
+      }
+    },
+    "responses": {
       "404": {
         "description": "Not Found",
             "content": {
@@ -266,28 +401,6 @@
                   "city":"Manaus",
                   "state":"BH",
                   "createdAt":"2022-01-10T16:20:21.963Z"
-                }
-              }
-            }
-          }
-        }
-      },
-      "alreadyRegistered": {
-        "description": "Already Registered",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type":"object",
-              "properties": {
-                "message": {
-                  "type": "string"
-                }
-              }
-            },
-            "examples": {
-              "Need query params": {
-                "value": {
-                  "message": "Already Registered"
                 }
               }
             }
