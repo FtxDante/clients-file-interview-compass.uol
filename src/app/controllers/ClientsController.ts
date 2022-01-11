@@ -6,7 +6,7 @@ export default class ClientsController {
     try {
       const {body} = req;
       const result = await ClientsService.create(body);
-      res.status(200).json(result);
+      res.status(201).json(result);
     } catch (err: any) {
       res.status(400).json({message: err.message});
     }
@@ -48,7 +48,7 @@ export default class ClientsController {
     try {
       const {id} = req.params;
       await ClientsService.delete(id);
-      res.status(200).end();
+      res.status(204).end();
     } catch (err: any) {
       res.status(400).json({message: err.message});
     }

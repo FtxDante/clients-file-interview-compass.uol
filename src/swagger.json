@@ -1,0 +1,314 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Clients File",
+    "description": "This API aims to save customer data, simply and directly.",
+    "contact": {
+      "name": "FtxDante",
+      "url": "https://github.com/FtxDante"
+    },
+    "license": "./LICENSE",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "API - PRODUCTION"
+    },
+    {
+      "url":"http://localhost:3000/api/v1",
+      "description":"API - TESTS"
+    }
+  ],
+  "paths": {
+      "/city/all": {
+        "get": {
+          "summary": "Get all cities",
+          "description": "Allow search by city, state and id",
+          "tags": ["Cities"],
+          "parameters": [
+            {
+              "name": "city",
+              "in": "query",
+              "description": "Allow filter the cities by city"
+            },
+            {
+              "name": "state",
+              "in": "query",
+              "description": "Allow filter the cities by state"
+            },
+            {
+              "name": "id",
+              "in": "query",
+              "description": "Allow filter the cities by id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "type": "array",
+                  "schema": {
+                    "$ref": "#/components/schemas/City"
+                  }, 
+                  "examples": {
+                    "city": {
+                      "value": {
+                        "items": [
+                          {
+                            "id": "543dc793-3db9-4406-bfb6-45a07b3ab5ba",
+                            "city": "Minas Gerais",
+                            "state": "BH",
+                            "createdAt": "2022-01-10T16:20:21.963Z"
+                          },
+                          {
+                            "id": "3477a336-45cd-4aa5-bce1-9f068849104e",
+                            "city": "Minas Gerais",
+                            "state": "CE",
+                            "createdAt": "2022-01-10T16:52:03.287Z"
+                          }
+                        ],
+                        "total": 2,
+                        "limit": 10,
+                        "offset": 1,
+                        "offsets": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    },
+    "/city": {
+      "get": {
+        "summary":"Find one city",
+        "description":"Allow search by city, by id or name",
+        "tags":["Cities"],
+        "parameters":[
+          {
+            "name":"city",
+            "in":"query",
+            "description": "Allow search by city"
+          },
+          {
+            "name":"id",
+            "in":"query",
+            "description":"Allow search by id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A city should be returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/City"
+                },
+                "examples": {
+                  "city": {
+                    "value": {
+                      "id": "3c3d4271-1b08-419b-b1fc-a5a260a51d6a",
+                      "city": "Manaus",
+                      "state": "AM",
+                      "createdAt": "2022-01-10T23:40:55.888Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref":"#/components/responses/400",
+            "examples": {
+              "Need query params": {
+                "value": {
+                  "message": "\"value\" must contain at least one of [city, state]"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary":"Create a city",
+        "description":"Allow create a city by passing city and state",
+        "tags":["Cities"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref":"#/components/responses/CityPost",
+                "required": ["city", "state"]
+              },
+              "examples": {
+                "Send a city": {
+                  "value": {
+                    "city":"Manaus",
+                    "state":"BH"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref":"#/components/responses/200"
+          },
+          "400": {
+            "$ref":"#/components/responses/alreadyRegistered"
+          }
+        }
+      }
+    },
+    "/city/{id}": {
+      "delete": {
+        "summary":"Delete a city",
+        "description": "A city should be deleted",
+        "tags": ["Cities"],
+        "parameters":[
+          {
+              "name":"id",
+              "in": "path",
+              "description": "Id of item that be deleted"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "$ref":"#/components/responses/404"
+          },
+          "400": {
+            "$ref":"#/components/responses/400",
+            "examples": {
+              "Id bad format": {
+                "value": {
+                  "message":"\"id\" must be a valid GUID"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "City": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {
+      "CityPost": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        }
+      },
+      "404": {
+        "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Need query params": {
+                    "value": {
+                      "message": "Not Found"
+                    }
+                  }
+                }
+              }
+            }
+      },
+      "200":{
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref":"#/components/schemas/City",
+              "required": ["city", "state"]
+            },
+            "examples": {
+              "Send a city": {
+                "value": {
+                  "id":"3477a336-45cd-4aa5-bce1-9f068849104e",
+                  "city":"Manaus",
+                  "state":"BH",
+                  "createdAt":"2022-01-10T16:20:21.963Z"
+                }
+              }
+            }
+          }
+        }
+      },
+      "alreadyRegistered": {
+        "description": "Already Registered",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type":"object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "examples": {
+              "Need query params": {
+                "value": {
+                  "message": "Already Registered"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400":{
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type":"object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
