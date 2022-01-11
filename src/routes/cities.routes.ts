@@ -6,8 +6,8 @@ import {allRequiredValidation,
 
 export default (server: Application, router: Router) => {
   router.post('/city', allRequiredValidation, CitiesController.postACity);
-  router.get('/city/all?', CitiesController.getAllCities);
-  router.get('/city/?', queriesRequiredValidation, CitiesController.findCity);
+  router.get('/city/all', CitiesController.getAllCities);
+  router.get('/city/', queriesRequiredValidation, CitiesController.findCity);
   router.delete('/city/:id', idRequiredValidation, CitiesController.deleteCity);
   server.use('/api/v1', router);
 };
