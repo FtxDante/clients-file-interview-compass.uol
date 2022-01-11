@@ -1,6 +1,5 @@
 /* eslint-disable require-jsdoc */
 import {MigrationInterface, QueryRunner, Table} from 'typeorm';
-
 export class CreateClients1641586368006 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(

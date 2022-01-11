@@ -1,5 +1,5 @@
 import {City} from '../interfaces/City';
-import CitiesRepository from '../Repository/CitiesRepository';
+import CitiesRepository from '../repositories/CitiesRepository';
 import Service from './Service';
 export default new class CitiesService extends Service {
   constructor() {

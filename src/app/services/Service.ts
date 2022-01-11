@@ -1,7 +1,7 @@
 import {AlreadyRegisteredError, NotFoundError, NotGivenQuery} from '../errors';
 import {City} from '../interfaces/City';
 import {Client} from '../interfaces/Client';
-import Repository from '../Repository/Repository';
+import Repository from '../repositories/Repository';
 
 export default class Service {
   constructor(private repository: Repository) {

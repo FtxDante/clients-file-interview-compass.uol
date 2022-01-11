@@ -19,5 +19,8 @@ export class CitiesSchema {
     if (!this.id) {
       this.id = uuid();
     }
+    if (!this.createdAt) {
+      this.createdAt = new Date();
+    }
   }
 };
