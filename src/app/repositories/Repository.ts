@@ -14,12 +14,12 @@ export default class Repository {
     return result;
   }
 
-  async findAll({limit, page, ...where}: any) {
+  async findAllWithPagination({limit=10, page = 1, ...where}: any) {
     if (page >= 1) page--;
     const schema = getRepository(this.schema);
     const filter = {where, skip: page * limit, take: limit};
-    const result = await schema.findAndCount(filter);
-
+    const filtered = await schema.findAndCount(filter);
+    const result = this.paginate({limit, page}, filtered);
     return result;
   }
 
@@ -44,5 +44,18 @@ export default class Repository {
   async delete(id: string) {
     const schema = getRepository(this.schema);
     await schema.delete(id);
+  }
+
+  paginate({limit, page}: any, result: any) {
+    const [items, total] = result;
+    const offsets = Math.ceil(total/limit);
+    const offset = page + 1;
+    return {
+      items,
+      total,
+      limit,
+      offset,
+      offsets,
+    };
   }
 };

@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
 import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
-import {v4 as uuid} from 'uuid';
+import {randomUUID} from 'crypto';
 @Entity('cities')
 export class CitiesSchema {
   @PrimaryGeneratedColumn('uuid')
@@ -17,7 +17,7 @@ export class CitiesSchema {
 
   constructor() {
     if (!this.id) {
-      this.id = uuid();
+      this.id = randomUUID();
     }
     if (!this.createdAt) {
       this.createdAt = new Date();

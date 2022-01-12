@@ -1,6 +1,5 @@
 import {httpStatusCode} from './httpStatusCode';
-import {AlreadyRegisteredError} from './AlreadyRegisteredError';
-import {NotFoundError} from './NotFoundError';
-import {NotGivenQuery} from './NotGivenQuery';
+import {NotFound} from './NotFound';
+import {BadRequest} from './BadRequest';
 
-export {httpStatusCode, AlreadyRegisteredError, NotFoundError, NotGivenQuery};
+export {httpStatusCode, NotFound, BadRequest};

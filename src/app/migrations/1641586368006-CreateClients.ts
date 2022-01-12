@@ -17,16 +17,12 @@ export class CreateClients1641586368006 implements MigrationInterface {
             },
             {
               name: 'gender',
-              enum: ['male', 'female'],
+              enum: ['male', 'female', 'others'],
               type: 'varchar',
             },
             {
               name: 'birthdate',
               type: 'timestamp',
-            },
-            {
-              name: 'age',
-              type: 'numeric',
             },
             {
               name: 'current_city_id',

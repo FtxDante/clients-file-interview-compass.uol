@@ -12,8 +12,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
           .min(2)
           .max(2)
           .uppercase()
-          .required()
-          .uppercase(),
+          .required(),
     });
     const {body} = req;
     const {error} = schema.validate(body, {abortEarly: false});
