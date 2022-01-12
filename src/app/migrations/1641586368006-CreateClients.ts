@@ -1,6 +1,5 @@
 /* eslint-disable require-jsdoc */
 import {MigrationInterface, QueryRunner, Table} from 'typeorm';
-
 export class CreateClients1641586368006 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -18,16 +17,12 @@ export class CreateClients1641586368006 implements MigrationInterface {
             },
             {
               name: 'gender',
-              enum: ['male', 'female'],
+              enum: ['male', 'female', 'others'],
               type: 'varchar',
             },
             {
               name: 'birthdate',
               type: 'timestamp',
-            },
-            {
-              name: 'age',
-              type: 'numeric',
             },
             {
               name: 'current_city_id',

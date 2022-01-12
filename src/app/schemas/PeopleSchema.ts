@@ -5,7 +5,7 @@ import {Column,
   ManyToOne,
   PrimaryGeneratedColumn} from 'typeorm';
 import {CitiesSchema} from './CitiesSchema';
-import {v4 as uuid} from 'uuid';
+import {randomUUID} from 'crypto';
 
 @Entity('clients')
 export class PeopleSchema {
@@ -22,9 +22,6 @@ export class PeopleSchema {
     birthdate!: Date;
 
   @Column()
-    age!: number;
-
-  @Column()
     current_city_id!: string;
 
   @ManyToOne(() => CitiesSchema)
@@ -36,7 +33,10 @@ export class PeopleSchema {
 
   constructor() {
     if (!this.id) {
-      this.id = uuid();
+      this.id = randomUUID();
+    }
+    if (!this.createdAt) {
+      this.createdAt = new Date();
     }
   }
 };

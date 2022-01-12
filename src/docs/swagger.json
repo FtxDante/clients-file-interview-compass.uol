@@ -1,0 +1,680 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Clients File",
+    "description": "This API aims to save customer data, simply and directly.",
+    "contact": {
+      "name": "FtxDante",
+      "url": "https://github.com/FtxDante"
+    },
+    "license": "./LICENSE",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "API - PRODUCTION"
+    },
+    {
+      "url":"http://localhost:3000/api/v1",
+      "description":"API - TESTS"
+    }
+  ],
+  "paths": {
+    "/city": {
+      "post": {
+        "description":"Allow create a city by passing city and state",
+        "summary":"Create a city",
+        "tags":["Cities"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref":"#/components/requestBodies/CityPost",
+                "required": ["city", "state"]
+              },
+              "examples": {
+                "Send a city": {
+                  "value": {
+                    "city":"Manaus",
+                    "state":"BH"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200":{
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref":"#/components/schemas/City"
+                },
+                "examples": {
+                  "Send a city": {
+                    "value": {
+                      "id":"3477a336-45cd-4aa5-bce1-9f068849104e",
+                      "city":"Manaus",
+                      "state":"BH",
+                      "createdAt":"2022-01-10T16:20:21.963Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+             "application/json": {
+              "schema": {
+                "$ref":"#/components/responses/400"
+              },
+              "examples": {
+                "Id was found": {
+                  "value": {
+                    "message": "Already Registered"
+                  }
+                }
+              }
+             } 
+            }
+          }
+        }
+      },
+      "get": {
+        "summary":"Find one city",
+        "description":"Allow search by city, by id or name",
+        "tags":["Cities"],
+        "parameters":[
+          {
+            "name":"city",
+            "in":"query",
+            "description": "Allow search by city"
+          },
+          {
+            "name":"id",
+            "in":"query",
+            "description":"Allow search by id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/City"
+                },
+                "examples": {
+                  "city": {
+                    "value": {
+                      "id": "3c3d4271-1b08-419b-b1fc-a5a260a51d6a",
+                      "city": "Manaus",
+                      "state": "AM",
+                      "createdAt": "2022-01-10T23:40:55.888Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not condition to search sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref":"#/components/responses/400"
+                },
+                "examples": {
+                  "Need query params": {
+                    "value": {
+                      "message": "\"value\" must contain at least one of [city, state]"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+      "/city/all": {
+        "get": {
+          "summary": "Get all cities",
+          "description": "Allow search by city, state and id",
+          "tags": ["Cities"],
+          "parameters": [
+            {
+              "name": "city",
+              "in": "query",
+              "description": "Allow filter the cities by city"
+            },
+            {
+              "name": "state",
+              "in": "query",
+              "description": "Allow filter the cities by state"
+            },
+            {
+              "name": "id",
+              "in": "query",
+              "description": "Allow filter the cities by id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "type": "array",
+                  "schema": {
+                    "$ref": "#/components/schemas/City"
+                  }, 
+                  "examples": {
+                    "city": {
+                      "value": {
+                        "items": [
+                          {
+                            "id": "543dc793-3db9-4406-bfb6-45a07b3ab5ba",
+                            "city": "Minas Gerais",
+                            "state": "BH",
+                            "createdAt": "2022-01-10T16:20:21.963Z"
+                          },
+                          {
+                            "id": "3477a336-45cd-4aa5-bce1-9f068849104e",
+                            "city": "Minas Gerais",
+                            "state": "CE",
+                            "createdAt": "2022-01-10T16:52:03.287Z"
+                          }
+                        ],
+                        "total": 2,
+                        "limit": 10,
+                        "offset": 1,
+                        "offsets": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    },
+    "/city/{id}": {
+      "delete": {
+        "summary":"Delete a city",
+        "description": "A city should be deleted",
+        "tags": ["Cities"],
+        "parameters":[
+          {
+              "name":"id",
+              "in": "path",
+              "description": "Id of item that be deleted",
+              "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "$ref":"#/components/responses/404"
+          },
+          "400": {
+            "description": "Invalid ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref":"#/components/responses/400"
+                },
+                "examples": {
+                  "Id bad format": {
+                    "value": {
+                      "message":"\"id\" must be a valid GUID"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients": {
+      "post": {
+        "description": "Allow create a client",
+        "summary": "Create a client",
+        "tags": ["Clients"],
+        "requestBody": {
+          "description":"Need send, name, gender, birthdate, age, current_city_id",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref":"#/components/requestBodies/ClientsPost"
+              },
+              "examples": {
+                "Request Body": {
+                  "value":{
+                    "name": "John Travolta",
+                    "gender": "male",
+                    "birthdate": "1980-12-21T03:00:00.000Z",
+                    "age": "70",
+                    "current_city_id": "543dc793-3db9-4406-bfb6-45a07b3ab5ba"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200":{
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref":"#/components/schemas/Clients"
+                },
+                "examples": {
+                  "Send a city": {
+                    "value": {
+                      "id":"3477a336-45cd-4aa5-bce1-9f068849104e",
+                      "name": "John Travolta",
+                      "gender": "male",
+                      "birthdate": "1980-12-21T03:00:00.000Z",
+                      "age": "70",
+                      "current_city_id": "543dc793-3db9-4406-bfb6-45a07b3ab5ba",
+                      "createdAt":"2022-01-10T16:20:21.963Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref":"#/components/responses/400"
+                },
+                "examples": {
+                  "Already Registered": {
+                    "value": {
+                      "message":"Already Registered"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get a client searching by name or id",
+        "summary": "Should search by a client",
+        "tags":["Clients"],
+        "parameters": [
+          {
+            "name":"name",
+            "in":"query",
+            "description": "Search by name"
+          },
+          {
+            "name":"id",
+            "in":"query",
+            "description": "Search by id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description":"OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref":"#/components/schemas/Clients"
+                },
+                "examples": {
+                  "Get City": {
+                    "value": {
+                      "id": "d55a6255-04ba-46de-928d-ab19d9634726",
+                      "name": "John Travolta",
+                      "gender": "female",
+                      "birthdate": "1980-12-21T03:00:00.000Z",
+                      "age": "70",
+                      "current_city_id": "eb75cd5f-f672-46a3-8563-88769d75e79c",
+                      "createdAt": "2022-01-12T02:57:54.686Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/400"
+                },
+                "examples": {
+                  "Need a query": {
+                    "value": {
+                      "message": "\"value\" must contain at least one of [id, name]"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/client/all": {
+      "get": {
+        "description": "Should return all cities, searching by any item",
+        "summary":"Get all clients",
+        "tags":["Clients"],
+        "parameters": [
+          {
+            "name":"id",
+            "in":"query"
+          },
+          {
+            "name": "name",
+            "in":"query"
+          },
+          {
+            "name":"gender",
+            "in":"query"
+          },
+          {
+            "name": "birthdate",
+            "in":"query"
+          },
+          {
+            "name":"age",
+            "in":"query"
+          },
+          {
+            "name": "current_city_id",
+            "in":"query"
+          },
+          {
+            "name":"createdAt",
+            "in":"query"
+          }
+        ],
+         "responses": {
+           "200": {
+             "description": "OK",
+             "content": {
+               "application/json": {
+                 "schema": {
+                    "type":"object",
+                    "properties": {
+                      "items": {
+                        "type":"object"
+                      },
+                      "total": {
+                        "type":"number"
+                      },
+                      "limit": {
+                        "type":"number"
+                      },
+                      "offset": {
+                        "type":"number"
+                      },
+                      "offsets": {
+                        "type":"number"
+                      }
+                    }
+                 },
+                 "examples": {
+                  "List of clients": {
+                    "value": {
+                      "items": [
+                        {
+                          "id": "d55a6255-04ba-46de-928d-ab19d9634726",
+                          "name": "John Travolta",
+                          "gender": "female",
+                          "birthdate": "1980-12-21T03:00:00.000Z",
+                          "age": "70",
+                          "current_city_id": "eb75cd5f-f672-46a3-8563-88769d75e79c",
+                          "createdAt": "2022-01-12T02:57:54.686Z"
+                        }
+                      ],
+                      "total": 1,
+                      "limit": 10,
+                      "offset": 1,
+                      "offsets": 1
+                     }
+                    }
+                  }
+               }
+             }
+           }
+         }
+      }
+    },
+    "/client/{id}": {
+      "patch": {
+        "description": "Update name of a client",
+        "summary": "Update a client",
+        "tags":["Clients"],
+        "parameters": [
+          {
+            "name":"id",
+            "in":"path",
+            "description":"Id is necessary to update a client",
+            "required": true
+          }
+        ],
+        "requestBody":{
+          "description":"Need send a name",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type":"object",
+                "properties": {
+                  "name": {
+                    "type":"string"
+                  }
+                }
+              },
+              "examples":{
+                "Update name": {
+                  "value": {
+                    "name": "John Bitencur"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description":"OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref":"#/components/schemas/Clients"
+                },
+                "examples": {
+                  "Send a city": {
+                    "value": {
+                      "id":"3477a336-45cd-4aa5-bce1-9f068849104e",
+                      "name": "John Bitencur",
+                      "gender": "male",
+                      "birthdate": "1980-12-21T03:00:00.000Z",
+                      "age": "70",
+                      "current_city_id": "543dc793-3db9-4406-bfb6-45a07b3ab5ba",
+                      "createdAt":"2022-01-10T16:20:21.963Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary":"Delete a client",
+        "description": "A client should be deleted",
+        "tags": ["Clients"],
+        "parameters":[
+          {
+              "name":"id",
+              "in": "path",
+              "description": "Id of client that be deleted",
+              "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "$ref":"#/components/responses/404"
+          },
+          "400": {
+            "description": "Invalid ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref":"#/components/responses/400"
+                },
+                "examples": {
+                  "Id bad format": {
+                    "value": {
+                      "message":"\"id\" must be a valid GUID"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "City": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "Clients": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type":"string"
+          },
+          "name": {
+            "type":"string"
+          },
+          "gender": {
+            "type":"string",
+            "enum": ["male", "female"]
+          },
+          "birthdate":{
+            "type":"string",
+            "format":"date"
+          },
+          "age": {
+            "type": "number"
+          },
+          "current_city_id": {
+            "type":"string",
+            "format":"uuid"
+          },
+          "createdAt": {
+            "type":"string",
+            "format":"date"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "CityPost": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        }
+      },
+      "ClientsPost": {
+        "type":"object",
+        "properties": {
+          "name": {
+            "type":"string"
+          },
+          "gender": {
+            "type":"string"
+          },
+          "birthdate":{
+            "type":"string",
+            "format":"date"
+          },
+          "age": {
+            "type": "number"
+          },
+          "current_city_id": {
+            "type":"string",
+            "format":"uuid"
+          }
+        }
+      }
+    },
+    "responses": {
+      "404": {
+        "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Need query params": {
+                    "value": {
+                      "message": "Not Found"
+                    }
+                  }
+                }
+              }
+            }
+      },
+      "400":{
+        "type":"object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

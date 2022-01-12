@@ -1,13 +1,7 @@
 import {createConnection} from 'typeorm';
-class Connection {
-  constructor() {
-    this.connect();
-  }
-  async connect() {
-    console.log('Connectando');
-    await createConnection();
-    console.log('Conectado');
-  }
-}
+import dotenv from 'dotenv';
+dotenv.config({path: process.env.NODE_ENV == 'test'? '.env.test': '.env'});
 
-export default new Connection();
+export const connection = async () => {
+  await createConnection();
+};

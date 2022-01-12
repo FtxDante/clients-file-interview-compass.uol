@@ -1,14 +1,30 @@
+import 'reflect-metadata';
 import './infra/database';
 import express from 'express';
-import 'reflect-metadata';
 import routes from './routes';
-import {pagination} from 'typeorm-pagination';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocs from './docs/swagger.json';
+class App {
+  private _server;
+  constructor() {
+    this._server = express();
+    this.middlewares();
+    this.router();
+  }
 
-const app = express();
+  private middlewares() {
+    this.server.use(express.json());
+    this.server.use('/documentation', swaggerUi.serve,
+        swaggerUi.setup(swaggerDocs));
+  }
 
-app.use(express.json());
-app.use(pagination);
-routes(app);
+  private router() {
+    routes(this.server);
+  }
 
-export default app;
+  public get server() {
+    return this._server;
+  }
+};
 
+export default new App().server;
