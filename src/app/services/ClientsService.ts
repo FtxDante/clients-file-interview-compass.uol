@@ -1,5 +1,5 @@
 import {Client} from '../interfaces/Client';
-import ClientsRepository from '../Repository/ClientsRepository';
+import ClientsRepository from '../repositories/ClientsRepository';
 import Service from './Service';
 
 export default new class ClientsService extends Service {
