@@ -6,7 +6,7 @@
     "port": 5432,
     "username": "postgres",
     "password": "docker",
-    "database": "interviewDB",
+    "database": "clients_file_DB",
     "synchronize": false,
     "entities": [
        "src/app/schemas/*.ts"
@@ -26,7 +26,7 @@
   "port": 5432,
   "username": "postgres",
   "password": "docker",
-  "database": "testsDB",
+  "database": "clients_test_DB",
   "synchronize": true,
   "entities": [
     "src/app/schemas/*.ts"
