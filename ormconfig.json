@@ -1,0 +1,42 @@
+[
+  {
+    "name": "default",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "docker",
+    "database": "interviewDB",
+    "synchronize": false,
+    "entities": [
+       "src/app/schemas/*.ts"
+    ],
+    "migrations": [
+       "src/app/migrations/*.ts"
+    ],
+    "cli": {
+       "entitiesDir": "src/app/schemas",
+       "migrationsDir": "src/app/migrations"
+    }
+ },
+ {
+  "name": "test",
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "docker",
+  "database": "testsDB",
+  "synchronize": true,
+  "entities": [
+    "src/app/schemas/*.ts"
+ ],
+ "migrations": [
+    "src/app/migrations/*.ts"
+ ],
+ "cli": {
+    "entitiesDir": "src/app/schemas",
+    "migrationsDir": "src/app/migrations"
+ }
+}
+]
