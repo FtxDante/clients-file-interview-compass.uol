@@ -23,8 +23,8 @@
   "paths": {
     "/city": {
       "post": {
-        "summary":"Create a city",
         "description":"Allow create a city by passing city and state",
+        "summary":"Create a city",
         "tags":["Cities"],
         "requestBody": {
           "content": {

@@ -16,8 +16,7 @@ export default class CitiesController {
 
   static async getAllCities(req: Request, res: Response) {
     try {
-      const {limit = 10, page = 1, ...queries} = req.query;
-      const result = await CitiesService.getAll({limit, page, ...queries});
+      const result = await CitiesService.getAll(req.query);
       res.status(200).json(result);
     } catch (err: any) {
       res.status(err.statusCode || 500).json({message: err.message});

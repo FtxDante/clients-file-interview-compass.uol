@@ -1,4 +1,4 @@
-import {AlreadyRegisteredError, NotFoundError, NotGivenQuery} from '../errors';
+import {BadRequest, NotFound} from '../errors';
 import {City} from '../interfaces/City';
 import {Client} from '../interfaces/Client';
 import Repository from '../repositories/Repository';
@@ -13,15 +13,15 @@ export default class Service {
   }
 
   async getAll(where: any) {
-    const result = await this.repository.findAll(where);
-    return this.paginate(where, result);
+    const result = await this.repository.findAllWithPagination(where);
+    return result;
   }
 
   async findOne(where: object) {
     const isEmptyWhere = Object.keys(where).length === 0;
-    if (isEmptyWhere) throw new NotGivenQuery();
+    if (isEmptyWhere) throw new BadRequest('Query required');
     const result = await this.repository.findOne(where);
-    if (!result) throw new NotFoundError();
+    if (!result) throw new NotFound('QUERIES');
     return result;
   }
 
@@ -39,21 +39,7 @@ export default class Service {
 
   async alreadyRegistered(where: City | Client): Promise<void> {
     const AlreadyRegistered = await this.repository.findOne(where);
-    if (AlreadyRegistered) throw new AlreadyRegisteredError();
-  }
-
-  paginate({limit, page}: any, result: any) {
-    const [items, total] = result;
-    const offsets = Math.ceil(total/limit);
-    const offset = parseInt(page);
-    limit = parseInt(limit);
-    return {
-      items,
-      total,
-      limit,
-      offset,
-      offsets,
-    };
+    if (AlreadyRegistered) throw new BadRequest('Already Registered');
   }
 
   filterColumns(data: City) {

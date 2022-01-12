@@ -3,7 +3,7 @@ import './infra/database';
 import express from 'express';
 import routes from './routes';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocs from './swagger.json';
+import swaggerDocs from './docs/swagger.json';
 class App {
   private _server;
   constructor() {
