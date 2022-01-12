@@ -6,9 +6,9 @@ export default class ClientsController {
     try {
       const {body} = req;
       const result = await ClientsService.create(body);
-      res.status(201).json(result);
+      return res.status(201).json(result);
     } catch (err: any) {
-      res.status(400).json({message: err.message});
+      return res.status(400).json({message: err.message});
     }
   }
 
@@ -16,9 +16,9 @@ export default class ClientsController {
     try {
       const {limit = 10, page = 1, ...queries} = req.query;
       const result = await ClientsService.getAll({limit, page, ...queries});
-      res.status(200).json(result);
+      return res.status(200).json(result);
     } catch (err: any) {
-      res.status(400).json({message: err.message});
+      return res.status(400).json({message: err.message});
     }
   }
 
@@ -26,9 +26,9 @@ export default class ClientsController {
     try {
       const query = req.query;
       const result = await ClientsService.findOne(query);
-      res.status(200).json(result);
+      return res.status(200).json(result);
     } catch (err: any) {
-      res.status(400).json({message: err.message});
+      return res.status(400).json({message: err.message});
     }
   }
 

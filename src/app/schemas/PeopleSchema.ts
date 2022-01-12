@@ -22,9 +22,6 @@ export class PeopleSchema {
     birthdate!: Date;
 
   @Column()
-    age!: number;
-
-  @Column()
     current_city_id!: string;
 
   @ManyToOne(() => CitiesSchema)

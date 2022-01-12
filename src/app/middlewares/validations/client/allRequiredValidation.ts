@@ -10,13 +10,10 @@ export default (req: Request, res: Response, next: NextFunction) => {
           .max(50)
           .required(),
       gender: Joi.string()
-          .valid('male', 'female')
+          .valid('male', 'female', 'others')
           .required(),
       birthdate: Joi.date()
-          .required(),
-      age: Joi.number()
-          .min(0)
-          .max(130)
+          .max(new Date())
           .required(),
       current_city_id: Joi.string()
           .uuid()
