@@ -5,7 +5,7 @@
     "host": "localhost",
     "port": 5432,
     "username": "postgres",
-    "password": "docker",
+    "password": "postgres",
     "database": "clients_file_DB",
     "synchronize": false,
     "entities": [
@@ -25,7 +25,7 @@
   "host": "localhost",
   "port": 5432,
   "username": "postgres",
-  "password": "docker",
+  "password": "postgres",
   "database": "clients_test_DB",
   "synchronize": true,
   "entities": [
