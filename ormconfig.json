@@ -5,8 +5,8 @@
     "host": "localhost",
     "port": 5432,
     "username": "postgres",
-    "password": "docker",
-    "database": "interviewDB",
+    "password": "postgres",
+    "database": "clients_file_DB",
     "synchronize": false,
     "entities": [
        "src/app/schemas/*.ts"
@@ -25,8 +25,8 @@
   "host": "localhost",
   "port": 5432,
   "username": "postgres",
-  "password": "docker",
-  "database": "testsDB",
+  "password": "postgres",
+  "database": "clients_test_DB",
   "synchronize": true,
   "entities": [
     "src/app/schemas/*.ts"
