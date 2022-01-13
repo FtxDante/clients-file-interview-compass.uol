@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import './infra/database';
 import express from 'express';
 import routes from './routes';
 import swaggerUi from 'swagger-ui-express';
