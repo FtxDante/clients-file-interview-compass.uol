@@ -4,10 +4,14 @@ import Joi from 'joi';
 export default (req: Request, res: Response, next: NextFunction) => {
   try {
     const schema = Joi.object({
-      city: Joi.string(),
+      city: Joi.string()
+          .required(),
       state: Joi.string()
-          .uppercase(),
-    }).or('city', 'state');
+          .min(2)
+          .max(2)
+          .uppercase()
+          .required(),
+    });
     const {query} = req;
     const {error} = schema.validate(query, {abortEarly: false});
     if (error) throw error;

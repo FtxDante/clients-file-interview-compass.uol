@@ -4,7 +4,9 @@ import routes from './routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocs from './docs/swagger/swagger.json';
 import dotenv from 'dotenv';
+import {connection} from './infra/database';
 dotenv.config();
+connection();
 class App {
   private _server;
   constructor() {

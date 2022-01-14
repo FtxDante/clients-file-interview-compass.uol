@@ -1,13 +1,12 @@
-import {EntityTarget, getRepository} from 'typeorm';
+import {EntityTarget, getConnection} from 'typeorm';
 import {City} from '../interfaces/City';
 import {Client} from '../interfaces/Client';
-
 export default class Repository {
   constructor(private schema: EntityTarget<City | Client>) {
   }
 
   async create(data: City | Client) {
-    const schema = getRepository(this.schema);
+    const schema = getConnection(process.env.NODE_ENV).getRepository(this.schema);
     const result = schema.create(data);
     await schema.save(result);
 
@@ -16,7 +15,7 @@ export default class Repository {
 
   async findAllWithPagination({limit=10, page = 1, ...where}: any) {
     if (page >= 1) page--;
-    const schema = getRepository(this.schema);
+    const schema = getConnection(process.env.NODE_ENV).getRepository(this.schema);
     const filter = {where, skip: page * limit, take: limit};
     const filtered = await schema.findAndCount(filter);
     const result = this.paginate({limit, page}, filtered);
@@ -24,14 +23,14 @@ export default class Repository {
   }
 
   async findOne(where: object) {
-    const schema = getRepository(this.schema);
+    const schema = getConnection(process.env.NODE_ENV).getRepository(this.schema);
     const result = await schema.findOne(where);
 
     return result;
   }
 
   async update(id:string, data: any, columns: string[]) {
-    const schema = getRepository(this.schema);
+    const schema = getConnection(process.env.NODE_ENV).getRepository(this.schema);
     const result: any = await schema.findOne(id);
 
     columns.forEach((column: string) => {
@@ -42,7 +41,7 @@ export default class Repository {
   }
 
   async delete(id: string) {
-    const schema = getRepository(this.schema);
+    const schema = getConnection(process.env.NODE_ENV).getRepository(this.schema);
     await schema.delete(id);
   }
 

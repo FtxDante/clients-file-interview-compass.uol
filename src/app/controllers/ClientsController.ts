@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+import {serializePaginate, serializer} from '../serializer/clientsSerializer';
 import ClientsService from '../services/ClientsService';
 
 export default class ClientsController {
@@ -8,27 +9,23 @@ export default class ClientsController {
       const result = await ClientsService.create(body);
       return res.status(201).json(result);
     } catch (err: any) {
-      return res.status(400).json({message: err.message});
+      return res.status(err.statusCode).json({message: err.message});
     }
   }
 
   static async getAllClients(req: Request, res: Response) {
-    try {
-      const {limit = 10, page = 1, ...queries} = req.query;
-      const result = await ClientsService.getAll({limit, page, ...queries});
-      return res.status(200).json(result);
-    } catch (err: any) {
-      return res.status(400).json({message: err.message});
-    }
+    const {limit = 10, page = 1, ...queries} = req.query;
+    const result = await ClientsService.getAll({limit, page, ...queries});
+    return res.status(200).json(serializePaginate(result));
   }
 
   static async findOneClient(req: Request, res: Response) {
     try {
       const query = req.query;
       const result = await ClientsService.findOne(query);
-      return res.status(200).json(result);
+      return res.status(200).json(serializer(result));
     } catch (err: any) {
-      return res.status(400).json({message: err.message});
+      return res.status(err.statusCode).json({message: err.message});
     }
   }
 
@@ -37,9 +34,9 @@ export default class ClientsController {
       const {id} = req.params;
       const {body} = req;
       const result = await ClientsService.updateOne(id, body);
-      res.status(200).send(result);
+      return res.status(200).send(serializer(result));
     } catch (err: any) {
-      res.status(400).json({message: err.message});
+      return res.status(err.statusCode).json({message: err.message});
     }
   }
 
@@ -50,7 +47,7 @@ export default class ClientsController {
       await ClientsService.delete(id);
       res.status(204).end();
     } catch (err: any) {
-      res.status(400).json({message: err.message});
+      return res.status(err.statusCode).json({message: err.message});
     }
   }
 }
