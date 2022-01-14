@@ -18,8 +18,7 @@ export default new class ClientsService {
 
   async updateOne(id: any, {name}: Client): Promise<Client> {
     await this.findOne({id});
-    const columnsFiltered = this.filterColumns({name});
-    const result = await this.repository.update(id, {name}, columnsFiltered);
+    const result = await this.repository.update(id, {name});
     return result;
   }
 
@@ -42,13 +41,5 @@ export default new class ClientsService {
   async alreadyRegistered(where: Client): Promise<void> {
     const AlreadyRegistered = await this.repository.findOne(where);
     if (AlreadyRegistered) throw new BadRequest('Already Registered');
-  }
-  /* istanbul ignore next */
-  filterColumns(data: Client) {
-    const columns = Object.keys(data);
-    return columns.filter((column) => {
-      if (column == 'id' || column == 'createdAt') {};
-      return column;
-    });
   }
 };

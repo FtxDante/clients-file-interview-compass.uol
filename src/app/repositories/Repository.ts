@@ -29,15 +29,11 @@ export default class Repository {
     return result;
   }
 
-  async update(id:string, data: any, columns: string[]) {
+  async update(id:string, data: any): Promise<any> {
     const schema = getConnection(process.env.NODE_ENV).getRepository(this.schema);
-    const result: any = await schema.findOne(id);
-
-    columns.forEach((column: string) => {
-      result[column] = data[column] ? data[column] : result[column];
-    });
-
-    return await schema.save(result);
+    await schema.update(id, data);
+    const update= await schema.findOne({id});
+    return update;
   }
 
   async delete(id: string) {
