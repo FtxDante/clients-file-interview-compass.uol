@@ -20,20 +20,26 @@ describe('Route cities', () => {
   let created: Response;
   it('should create a city with status 2021', async () => {
     created = await request(app).post('/api/v1/city').send(city);
-    const response = await request(app).get('/api/v1/city?city=Manaus&state=ZZ');
+    const {body, status} = await request(app).get('/api/v1/city?city=Manaus&state=ZZ');
     expect(created.status).toBe(201);
-    expect(response.body).toEqual(created.body);
+    expect(status).toBe(200);
+
+    expect(body.id).toEqual(created.body.id);
+    expect(body.city).toEqual(created.body.city);
+    expect(body.state).toEqual(created.body.state);
   });
 
   it('should throw error "Already Registered" ', async () => {
     const {body, status} = await request(app).post('/api/v1/city').send(city);
     expect(status).toBe(400);
+    expect(body).toHaveProperty('message');
     expect(body).toEqual({message: "Already Registered"});
   });
 
   it('should throw error when send data without min length to post with status 400', async () => {
     const {body, status} = await request(app).post('/api/v1/city').send({city: 'a', state: 'a'})
     expect(status).toBe(400);
+    expect(body).toHaveProperty('message');
     expect(body).toEqual({message: "\"city\" length must be at least 5 characters long. \"state\" length must be at least 2 characters long"});
   });
 
@@ -45,13 +51,16 @@ describe('Route cities', () => {
     expect(body).toHaveProperty('limit');
     expect(body).toHaveProperty('offset');
     expect(body).toHaveProperty('offsets');
-    expect(body.cities[0]).toEqual(created.body);
+    expect(body.cities[0].city).toEqual(created.body.city);
+    expect(body.cities[0].state).toEqual(created.body.state);
+    expect(body.cities[0].id).toEqual(created.body.id);
   });
 
   it('should return city researched by query params with status 200', async () => {
     const {body, status} = await request(app).get('/api/v1/city?city=Manaus&state=ZZ');
     expect(status).toBe(200);
-    expect(body).toEqual(created.body);
+    expect(body.city).toEqual(created.body.city);
+    expect(body.state).toEqual(created.body.state);
   });
 
   it('should return a error city and state required with status 400', async () => {
@@ -69,7 +78,7 @@ describe('Route cities', () => {
   });
 
   it('should delete a city with status 204', async () => {
-    const {body, status} = await request(app).delete(`/api/v1/city/${created.body.id}`);
+    const {status} = await request(app).delete(`/api/v1/city/${created.body.id}`);
     expect(status).toBe(204);
   });
 
