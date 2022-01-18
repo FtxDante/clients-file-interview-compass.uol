@@ -1,5 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import Joi from 'joi';
+import {Genders} from '../../../interfaces/enums/Gender';
 
 export default (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -10,7 +11,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
           .max(50)
           .required(),
       gender: Joi.string()
-          .valid('male', 'female', 'others')
+          .valid(Genders.MALE, Genders.FEMALE, Genders.OTHERS)
           .required(),
       birthdate: Joi.date()
           .max(new Date())
