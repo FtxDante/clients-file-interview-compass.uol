@@ -7,7 +7,7 @@ export default class ClientsController {
     try {
       const {body} = req;
       const result = await ClientsService.create(body);
-      return res.status(201).json(result);
+      return res.status(201).json(serializer(result));
     } catch (err: any) {
       return res.status(err.statusCode).json({message: err.message});
     }

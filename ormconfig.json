@@ -1,4 +1,24 @@
 [
+   {
+      "name": "production",
+      "type": "postgres",
+      "host": "ec2-3-232-22-121.compute-1.amazonaws.com",
+      "port": 5432,
+      "username": "qolcndkhiuvtzo",
+      "password": "ff6a6ed5789bd4d39ddf9e5e6a9fae4e0e1d6abc4f2a975231afd91dc608213b",
+      "database": "davqit1380i9cg",
+      "synchronize": false,
+      "entities": [
+         "src/app/schemas/*.ts"
+      ],
+      "migrations": [
+         "src/app/migrations/*.ts"
+      ],
+      "cli": {
+         "entitiesDir": "src/app/schemas",
+         "migrationsDir": "src/app/migrations"
+      }
+   },
   {
    "name": "default",
     "type": "postgres",

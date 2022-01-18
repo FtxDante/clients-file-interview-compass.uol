@@ -29,14 +29,17 @@ describe('Tests in route of clients', () => {
       current_city_id: cityCreated.body.id
     }
     created = await request(app).post('/api/v1/client').send(client);
+    const {body} = await request(app).get(`/api/v1/client?id=${created.body.id}`);
 
     expect(created.status).toBe(201);
     expect(created.body).toHaveProperty('id');
     expect(created.body).toHaveProperty('name');
+    expect(created.body).toHaveProperty('age');
     expect(created.body).toHaveProperty('gender');
     expect(created.body).toHaveProperty('birthdate');
     expect(created.body).toHaveProperty('current_city_id');
     expect(created.body).toHaveProperty('createdAt');
+    expect(created.body).toEqual(body)
   });
 
   it('should return error "Already Registered" with status 400', async () => {
