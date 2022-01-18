@@ -29,7 +29,7 @@ describe('Tests in route of clients', () => {
       current_city_id: cityCreated.body.id
     }
     created = await request(app).post('/api/v1/client').send(client);
-    const {body} = await request(app).get(`/api/v1/client?id=${created.body.id}`);
+    const {body, status} = await request(app).get(`/api/v1/client?id=${created.body.id}`);
 
     expect(created.status).toBe(201);
     expect(created.body).toHaveProperty('id');
@@ -39,42 +39,57 @@ describe('Tests in route of clients', () => {
     expect(created.body).toHaveProperty('birthdate');
     expect(created.body).toHaveProperty('current_city_id');
     expect(created.body).toHaveProperty('createdAt');
-    expect(created.body).toEqual(body)
+
+    expect(status).toBe(200);
+    expect(body.name).toEqual(created.body.name);
+    expect(body.gender).toEqual(created.body.gender);
+    expect(body.birthdate).toEqual(created.body.birthdate);
+    expect(body.birthdate).toEqual(created.body.birthdate);
+    expect(body.current_city_id).toEqual(created.body.current_city_id);
   });
 
   it('should return error "Already Registered" with status 400', async () => {
     const {body, status} = await request(app).post('/api/v1/client').send(client);
     expect(status).toBe(400);
+    expect(body).toHaveProperty('message');
     expect(body).toEqual({message: "Already Registered"});
   });
 
   it('should return erro "fields required" with status 400', async () => {
     const {body, status} = await request(app).post('/api/v1/client')
     expect(status).toBe(400);
+    expect(body).toHaveProperty('message');
     expect(body).toEqual({message: "\"name\" is required. \"gender\" is required. \"birthdate\" is required. \"current_city_id\" is required"});
   });
 
   it('should return client with status 200', async () => {
     const {body, status} = await request(app).get(`/api/v1/client?id=${created.body.id}`);
     expect(status).toBe(200);
-    expect(body).toEqual(created.body);
+    expect(body.name).toEqual(created.body.name);
+    expect(body.gender).toEqual(created.body.gender);
+    expect(body.birthdate).toEqual(created.body.birthdate);
+    expect(body.birthdate).toEqual(created.body.birthdate);
+    expect(body.current_city_id).toEqual(created.body.current_city_id);
   });
 
   it('should return error when no give the queries with status 400', async () => {
     const {body, status} = await request(app).get(`/api/v1/client`);
     expect(status).toBe(400);
+    expect(body).toHaveProperty('message');
     expect(body).toEqual({message: "\"value\" must contain at least one of [id, name]"})
   });
 
   it('should return error not found when give query "name" without registered client name with status 404', async () => {
     const {body, status} = await request(app).get(`/api/v1/client?name=Josue`);
     expect(status).toBe(404);
+    expect(body).toHaveProperty('message');
     expect(body).toEqual({message:  "Client was not found"})
   });
 
   it('should return error when not found with status 400', async () => {
     const {body, status} = await request(app).get(`/api/v1/client?id=d00ca95e-9fbf-4b5b-b949-ab168c52e562`);
     expect(status).toBe(404);
+    expect(body).toHaveProperty('message');
     expect(body).toEqual({message: "Client was not found"})
   });
 
@@ -86,7 +101,11 @@ describe('Tests in route of clients', () => {
     expect(body).toHaveProperty('limit')
     expect(body).toHaveProperty('offset')
     expect(body).toHaveProperty('offsets')
-    expect(body.clients[0]).toEqual(created.body);
+    expect(body.clients[0].name).toEqual(created.body.name);
+    expect(body.clients[0].gender).toEqual(created.body.gender);
+    expect(body.clients[0].birthdate).toEqual(created.body.birthdate);
+    expect(body.clients[0].birthdate).toEqual(created.body.birthdate);
+    expect(body.clients[0].current_city_id).toEqual(created.body.current_city_id);
   });
 
   it('should update a client with status 200', async () => {
@@ -98,12 +117,14 @@ describe('Tests in route of clients', () => {
   it('should return error when not found when try update with status 404', async () => {
     const {body, status} = await request(app).patch(`/api/v1/client/84d749f3-edfa-4e21-ba5b-459a9df11872`).send({name: 'example'});
     expect(status).toBe(404);
+    expect(body).toHaveProperty('message');
     expect(body).toEqual({message: "Client was not found"})
   });
 
   it('should return error when try update without name with status 400', async () => {
     const {body, status} = await request(app).patch(`/api/v1/client/${created.body.id}`);
     expect(status).toBe(400);
+    expect(body).toHaveProperty('message');
     expect(body).toEqual({message: "\"name\" is required"})
   });
 
@@ -115,12 +136,14 @@ describe('Tests in route of clients', () => {
   it('should return error not found with id 404', async () => {
     const {body, status} = await request(app).delete(`/api/v1/client/84d749f3-edfa-4e21-ba5b-459a9df11872`)
     expect(status).toBe(404);
+    expect(body).toHaveProperty('message');
     expect(body).toEqual({message: "Client was not found"})
   });
 
   it('should return error id invalid with id 400', async () => {
     const {body, status} = await request(app).delete(`/api/v1/client/84d749f3-edfa-4e21-ba5b-459a9df1a1872`)
     expect(status).toBe(400);
+    expect(body).toHaveProperty('message');
     expect(body).toEqual({message:  "\"id\" must be a valid GUID"})
   });
   
