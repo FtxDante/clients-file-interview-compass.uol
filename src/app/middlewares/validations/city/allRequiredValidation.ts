@@ -12,7 +12,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
       state: Joi.string()
           .min(2)
           .max(2)
-          .valid(...(Object.values(Cities)))
+          .valid(...Cities)
           .uppercase()
           .required(),
     });

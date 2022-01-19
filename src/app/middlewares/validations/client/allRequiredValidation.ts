@@ -12,7 +12,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
           .required(),
       gender: Joi.string()
           .uppercase()
-          .valid(...(Object.values(Genders)))
+          .valid(...Genders)
           .required(),
       birthdate: Joi.date()
           .max(new Date())
@@ -23,7 +23,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
     });
     const {body} = req;
     const {error} = schema.validate(body, {abortEarly: false});
-    console.log(Genders);
     if (error) throw error;
     next();
   } catch (err: any) {

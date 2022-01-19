@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-export enum Cities {
+export enum CitiesEnum {
   AC = 'AC',
   AL = 'AL',
   AP = 'AP',
@@ -28,3 +28,5 @@ export enum Cities {
   SE = 'SE',
   TO = 'TO',
 };
+
+export const Cities = Object.values(CitiesEnum);
