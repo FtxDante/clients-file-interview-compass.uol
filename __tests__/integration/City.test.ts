@@ -16,11 +16,11 @@ afterAll(async () => {
 })
 
 describe('Route cities', () => {
-  const city = {city: 'Manaus', state: 'ZZ'};
+  const city = {city: 'Manaus', state: 'CE'};
   let created: Response;
-  it('should create a city with status 2021', async () => {
+  it('should create a city with status 201', async () => {
     created = await request(app).post('/api/v1/city').send(city);
-    const {body, status} = await request(app).get('/api/v1/city?city=Manaus&state=ZZ');
+    const {body, status} = await request(app).get('/api/v1/city?city=Manaus&state=CE');
     expect(created.status).toBe(201);
     expect(status).toBe(200);
 
@@ -40,7 +40,7 @@ describe('Route cities', () => {
     const {body, status} = await request(app).post('/api/v1/city').send({city: 'a', state: 'a'})
     expect(status).toBe(400);
     expect(body).toHaveProperty('message');
-    expect(body).toEqual({message: "\"city\" length must be at least 5 characters long. \"state\" length must be at least 2 characters long"});
+    expect(body).toEqual({message: "\"city\" length must be at least 5 characters long. \"state\" must be one of [AC, AL, AP, AM, BA, CE, DF, ES, GO, MA, MT, MS, MG, PA, PB, PR, PE, PI, RJ, RN, RS, RO, RR, SC, SP, SE, TO]. \"state\" length must be at least 2 characters long"});
   });
 
   it('should return all cities with pagination and status 200', async () => {
@@ -57,7 +57,7 @@ describe('Route cities', () => {
   });
 
   it('should return city researched by query params with status 200', async () => {
-    const {body, status} = await request(app).get('/api/v1/city?city=Manaus&state=ZZ');
+    const {body, status} = await request(app).get('/api/v1/city?city=Manaus&state=CE');
     expect(status).toBe(200);
     expect(body.city).toEqual(created.body.city);
     expect(body.state).toEqual(created.body.state);

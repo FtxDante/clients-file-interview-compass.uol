@@ -10,7 +10,9 @@ export default (server: Application, router: Router) => {
   router.get('/client/all', ClientsController.getAllClients);
   router.get('/client',
       queriesRequiredValidation, ClientsController.findOneClient);
-  router.delete('/client/:id', idRequiredValidation, ClientsController.deleteClient);
-  router.patch('/client/:id', updateRequireValidation, idRequiredValidation, ClientsController.updateAClient);
+  router.delete('/client/:id', idRequiredValidation,
+      ClientsController.deleteClient);
+  router.patch('/client/:id', updateRequireValidation, idRequiredValidation,
+      ClientsController.updateAClient);
   server.use('/api/v1', router);
 };
