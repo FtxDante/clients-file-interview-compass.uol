@@ -1,5 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import Joi from 'joi';
+import {Cities} from '../../../interfaces/enums/Cities';
 
 export default (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -11,6 +12,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
       state: Joi.string()
           .min(2)
           .max(2)
+          .valid(...Cities)
           .uppercase()
           .required(),
     });
