@@ -1,6 +1,10 @@
 /* eslint-disable no-unused-vars */
-export enum Genders {
-  MALE = 'male',
-  FEMALE = 'female',
-  OTHERS = 'others'
+export enum GendersEnum {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+  OTHERS = 'OTHERS'
 };
+
+export const Genders = Object.values(GendersEnum);
+
+

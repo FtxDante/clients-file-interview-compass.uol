@@ -11,7 +11,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
           .max(50)
           .required(),
       gender: Joi.string()
-          .valid(Genders.MALE, Genders.FEMALE, Genders.OTHERS)
+          .uppercase()
+          .valid(...Genders)
           .required(),
       birthdate: Joi.date()
           .max(new Date())

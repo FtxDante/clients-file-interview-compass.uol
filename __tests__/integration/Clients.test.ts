@@ -20,7 +20,7 @@ describe('Tests in route of clients', () => {
   let created: Response;
 
   it('should create a client with status 201', async () => {
-    const city = {city: 'Manaus', state: 'ZZ'};
+    const city = {city: 'Manaus', state: 'CE'};
     const cityCreated = await request(app).post('/api/v1/city').send(city);
     client = {
       name: "Johan Travoslta",

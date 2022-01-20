@@ -1,5 +1,6 @@
 /* eslint-disable require-jsdoc */
 import {MigrationInterface, QueryRunner, Table} from 'typeorm';
+import {Cities} from '../interfaces/enums/Cities';
 export class CreateCities1641584843823 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -17,6 +18,7 @@ export class CreateCities1641584843823 implements MigrationInterface {
             },
             {
               name: 'state',
+              enum: [...(Object.values(Cities))],
               type: 'varchar',
             },
             {
